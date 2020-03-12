@@ -1,0 +1,49 @@
+
+/* ~~~~~~~~~~~~ STYLESHEET ~~~~~~~~~~~~~ */
+
+/* Created by: Sijia Wang
+ * Team: Data Analytics and Business Solutions (DABS)
+ * Version: 1.0
+ * Last modified: 2020-03-12
+ * Description: CSS for TBI project management dashboard
+ */
+
+.mainpage {
+  background-color: #fffbf0;
+}
+
+#content {
+  margin: 30px;
+}
+
+.header {
+  background-color: green;
+  padding: 0 30px 0 30px;
+  border-radius: 5px;
+}
+
+.subheader {
+  background-color: #7fabd2;
+  margin: 20px 0 20px 0;
+  padding: 0 30px 0 30px;
+  border-radius: 5px;
+}
+
+.title {
+  color: white;
+  margin-top: 12px;
+}
+
+.subtitle {
+  color: white;
+}
+
+#selector_en, #selector_fr {
+  margin: 25px 10px 5px 10px;
+}
+
+/* Table cells */
+td {
+  padding-left: 0;
+  padding-right: 10px;
+}

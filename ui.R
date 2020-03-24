@@ -4,7 +4,7 @@
 # Created by: Sijia Wang
 # Team: Data Analytics and Business Solutions (DABS)
 # Version: 1.0
-# Last modified: 2020-03-12
+# Last modified: 2020-03-24
 # Description: UI for TBI project management dashboard
 
 ui <- fluidPage(
@@ -16,26 +16,26 @@ ui <- fluidPage(
   ),
   div(
     id="content",
-    fluidRow(
-      column(
-        width=8,
-        div(
-          # p(style="padding-top:3px; font-size:9pt;",
-          #   "GC > ROEB / DGORAL > POD / DPO")
-        )
-      ),
-      column(
-        width=4,
-        div(
-          style="text-align:right; width:100%;",
-          HTML("<p style='font-size:10pt;'>Language / langue:&nbsp;
-             <span><select id='lang'>
-             <option value='en'>EN</option>
-             <option value='fr'>FR</option>
-             </select></span></p>")
-        )
-      )
-    ),
+    # fluidRow(
+    #   column(
+    #     width=8,
+    #     div(
+    #       # p(style="padding-top:3px; font-size:9pt;",
+    #       #   "GC > ROEB / DGORAL > POD / DPO")
+    #     )
+    #   ),
+    #   column(
+    #     width=4,
+    #     div(
+    #       style="text-align:right; width:100%;",
+    #       HTML("<p style='font-size:10pt;'>Language / langue:&nbsp;
+    #          <span><select id='lang'>
+    #          <option value='en'>EN</option>
+    #          <option value='fr'>FR</option>
+    #          </select></span></p>")
+    #     )
+    #   )
+    # ),
     div(
       id="english",
       fluidRow(
@@ -51,8 +51,8 @@ ui <- fluidPage(
           tags$tr(
             tags$td(style="padding:0 10px 23px 15px;",
                     tags$strong("Select a project:")),
-            tags$td(selectInput(inputId="project_en",label=NULL,
-                                choices=c("All"="all")))
+            tags$td(selectInput(inputId="project_en",label=NULL,width="440px",
+                                choices=c("All",health$Project)))
           )
         )
       ),
@@ -72,12 +72,23 @@ ui <- fluidPage(
         style="margin:5px;",
         column(
           width=6,
-          uiOutput(outputId="finance1_en") %>% withSpinner(color="#999999")
+          div(plotOutput(outputId="finance1_en",height="380px") %>% withSpinner(color="#999999")),
+          div(
+            style="text-align:center;",
+            div(style="display:inline-block; font-size:10pt; margin-right:5px;","Variance:"),
+            div(style="display:inline-block;",uiOutput("variance_en"))
+          )          
         ),
         column(
           width=6,
           wellPanel(
-            uiOutput(outputId="finance2_en") %>% withSpinner(color="#999999")
+            style="padding:0; background-color:#fffbf0;",
+            h5(style="padding:13px 0 5px 30px;","Breakdown of Forecasted Expenditures"),
+            plotlyOutput(outputId="finance2_en",
+                         width="100%",height="300px") %>% withSpinner(color="#999999"),
+            br(),
+            p(style="font-size:8pt; margin:0 0 20px 0; text-align:center;",
+              "Hover over to view dollar amounts")
           )
         )
       )

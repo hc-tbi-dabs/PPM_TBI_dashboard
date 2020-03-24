@@ -4,7 +4,7 @@
 /* Created by: Sijia Wang
  * Team: Data Analytics and Business Solutions (DABS)
  * Version: 1.0
- * Last modified: 2020-03-12
+ * Last modified: 2020-03-24
  * Description: CSS for TBI project management dashboard
  */
 
@@ -17,7 +17,8 @@
 }
 
 .header {
-  background-color: green;
+  /*background-color: #4b9734;*/
+  background-color: #7ca45b;
   padding: 0 30px 0 30px;
   border-radius: 5px;
 }
@@ -46,4 +47,8 @@
 td {
   padding-left: 0;
   padding-right: 10px;
+}
+
+.label-success {
+  background-color: #a2bf8a !important;
 }

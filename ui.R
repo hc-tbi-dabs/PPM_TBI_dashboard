@@ -56,7 +56,7 @@ ui <- fluidPage(
         column(
           width=6,
           div(style="width:400px; margin:0 auto;",
-              div(plotOutput(outputId="finance1_en",height="380px") %>% withSpinner(color="#999999")),
+              div(plotOutput(outputId="finance1_en",height="380px")),
               div(
                 style="text-align:center;",
                 div(style="display:inline-block; font-size:10pt; margin-right:5px;","Variance:"),

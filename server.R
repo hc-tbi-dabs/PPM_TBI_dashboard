@@ -155,7 +155,7 @@ server <- function(session, input, output) {
       <th width='32%'>Deliverable</th>
       <th width='28%'>Status</th>
       <th width='20%'>Overall Progress</th>
-      <th width='20%'>Anticipated End Date</th>
+      <th width='20%'>Anticipated End Date (actual if complete)</th>
       </tr>
       </thead>
       <tbody>"
@@ -203,16 +203,35 @@ server <- function(session, input, output) {
                          round(deliv.progress,0))
         }
         deliv.end <- proj.data[proj.data$Deliverables==deliv,]$Planned.End[1]
-        if(is.na(deliv.end)) {
-          td4 <- "<td style='color:#999999;'>--</td>"
-        } else {
+        deliv.act.end <- proj.data[proj.data$Deliverables==deliv,]$Actual.End[1]
+        if(deliv.progress==100 & !is.na(deliv.act.end)) {
+          td4 <- sprintf(col4,deliv.act.end)
+        } else if(deliv.progress==100 & !is.na(deliv.end)) {
           td4 <- sprintf(col4,deliv.end)
+        } else if(deliv.progress==100) {
+          td4 <- "<td style='color:#999999;'>--</td>"
+        } else if(!is.na(deliv.end)) {
+          td4 <- sprintf(col4,deliv.end)
+        } else {
+          td4 <- "<td style='color:#999999;'>--</td>"
         }
-        # deliv.act.end <- proj.data[proj.data$Deliverables==deliv,]$Actual.End[1]
-        # if(is.na(deliv.end) | is.na(deliv.act.end)) {
-        #   td2 <- sprintf()
-        # }
-        td2 <- "<td style='color:#999999;'>--</td>"
+        if(is.na(deliv.act.end)) {
+          td2 <- sprintf(col2,"#ccccb3","In progress")
+        } else if(is.na(deliv.end)) {
+          td2 <- sprintf(col2,"#bbbbbb","N/A")
+        } else {
+          diff <- as.period(
+            interval(ymd(deliv.end),ymd(deliv.act.end))) %>% month()
+          if(diff<=-1) {
+            td2 <- sprintf(col2,"#9fbfdf","Early")
+          } else if(diff<3) {
+            td2 <- sprintf(col2,"#a2bf8a","No change")
+          } else if(diff<6) {
+            td2 <- sprintf(col2,"#fddc81","3-6 months")
+          } else {
+            td2 <- sprintf(col2,"#ee9791","6+ months")
+          }
+        }
         
         tblrow <- paste0(tblrow,td1,td2,td3,td4,"</tr>")
         htmlstr <- paste0(htmlstr,tblrow)
@@ -224,7 +243,6 @@ server <- function(session, input, output) {
       tagList(
         HTML(topstr),
         tags$iframe(src="table.html",width="100%",height="280px",frameborder=0))
-      #HTML(topstr)
     }
   })
   
@@ -319,6 +337,11 @@ server <- function(session, input, output) {
                    hole=0.5)
     fig <- fig %>% layout(margin=list(l=40,r=25,b=35,t=60),
                           paper_bgcolor="rgba(245,245,245,0)")
+    if(!is.na(d$Value[1]) & !is.na(d$Value[2]) & !is.na(d$Value[3])
+       & d$Value[1]==0 & d$Value[2]==0 & d$Value[3]==0) {
+      fig <- plotly_empty(type="pie") %>%
+        layout(paper_bgcolor="rgba(245,245,245,0)")
+    }
     fig
   })
 }

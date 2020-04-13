@@ -4,9 +4,19 @@
 /* Created by: Sijia Wang
  * Team: Data Analytics and Business Solutions (DABS)
  * Version: 1.0
- * Last modified: 2020-03-31
+ * Last modified: 2020-04-13
  * Description: CSS for TBI project management dashboard
  */
+ 
+.back {
+  background-color: #fffbf0;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -10;
+}
 
 .mainpage {
   background-color: #fffbf0;
@@ -49,6 +59,11 @@ td {
   padding-right: 10px;
 }
 
+.labelcol {
+  text-align: right;
+  width: 110px;
+}
+
 .table-striped > tbody > tr:nth-child(2n+1) > td,
 .table-striped > tbody > tr:nth-child(2n+1) > th {
    /*background-color: #fff8e6;*/
@@ -62,4 +77,16 @@ td {
 
 .label-success {
   background-color: #a2bf8a;
+}
+
+/* Removes increment arrows from numeric input in Mozilla Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+/* Removes increment arrows from numeric input in Google Chrome */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

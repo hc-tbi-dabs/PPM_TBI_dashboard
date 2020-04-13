@@ -4,7 +4,7 @@
 # Created by: Sijia Wang
 # Team: Data Analytics and Business Solutions (DABS)
 # Version: 1.0
-# Last modified: 2020-03-31
+# Last modified: 2020-04-13
 # Description: Global data for TBI project management dashboard
 
 library(shiny)
@@ -20,26 +20,30 @@ library(zoo)
 library(ggpubr)
 library(lubridate)
 
-health <- read_excel("ppm_data.xlsx",sheet="Dashboard",skip=1)
-progress <- read_excel("ppm_data.xlsx",sheet="Description",skip=1)
-budget <- read_excel("ppm_data.xlsx",sheet="Budget",skip=1)
+# New CSVs
+health <- read.csv("health.csv",header=TRUE,na.strings=c(""))
+progress <- read.csv("progress.csv",header=TRUE,na.strings=c(""))
+budget <- read.csv("budget.csv",header=TRUE,na.strings=c(""))
+
+# Formatting for health data
+health$Project <- as.character(health$Project)
+health$IP <- as.character(health$IP)
+health$Status <- as.character(health$Status)
 
 # Formatting for progress data
-progress <- progress[!is.na(progress$Deliverables),]
-progress$Planned.Start <- as.Date(progress$Planned.Start,"%d/%m/%Y",tz="UTC")
-progress$Planned.End <- as.Date(progress$Planned.End,"%d/%m/%Y",tz="UTC")
-progress$Actual.Start <- as.Date(progress$Actual.Start,"%d/%m/%Y",tz="UTC")
-progress$Actual.End <- as.Date(progress$Actual.End,"%d/%m/%Y",tz="UTC")
-progress[is.na(progress$`% Complete`),"% Complete"] <- 0
-progress$Project <- na.locf(progress$Project)
+progress$Project <- as.character(progress$Project)
+progress$Deliverables <- as.character(progress$Deliverables)
+progress$Planned.Start <- as.Date(progress$Planned.Start,"%Y-%m-%d",tz="UTC")
+progress$Planned.End <- as.Date(progress$Planned.End,"%Y-%m-%d",tz="UTC")
+progress$Actual.Start <- as.Date(progress$Actual.Start,"%Y-%m-%d",tz="UTC")
+progress$Actual.End <- as.Date(progress$Actual.End,"%Y-%m-%d",tz="UTC")
 
 # Formatting for budget data
-budget <- budget[1:nrow(budget)-1,]
-for(col in c("Budget","Actuals","Commitment","Anticipated","Total Forecast","Variance")) {
+budget$Project <- as.character(budget$Project)
+budget$Type <- as.character(budget$Type)
+for(col in c("Budget","Actuals","Commitment","Anticipated","Total.Forecast")) {
   budget[is.na(budget[,col]),col] <- 0
 }
-budget$Budget <- as.integer(budget$Budget)
-budget$Project <- na.locf(budget$Project)
 
 shiny.header <- '<html>
 <head>
